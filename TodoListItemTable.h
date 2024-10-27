@@ -1,5 +1,6 @@
-#ifndef LISTITEMTABLE
-#endif // !LISTITEMTABLE
+#ifndef LISTITEMTABLE_H
+
+#define LISTITEMTABLE_H
 
 #include "TodoListItem.h"
 #include <iostream>
@@ -10,13 +11,23 @@ using namespace std;
 
 
 class TodoListItemTable {
-    private:
-        vector<TodoListItem> todoListTable;
-    public:
-        TodoListItem getItem(int itemId);
+private:
+    vector<TodoListItem> todoListTable;     // this is used for private data members
 
-        bool addItem(const TodoListItem &itemToAdd);
+public:
+    TodoListItem getItem(int itemId);
 
-        void removeItem(TodoListItem);
+    bool addItem(const TodoListItem &itemToAdd);
+
+    void removeItem(const TodoListItem &itemToRemove);
+
+    void updateItem(TodoListItem &itemToUpdate);
+
+private:
+    bool itemFound(const string &itemDescription) const;    // this is used for helper functions
+
+
+
 };
 
+#endif

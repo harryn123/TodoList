@@ -1,5 +1,4 @@
 #ifndef LISTITEM_H
-#endif
 #define LISTITEM_H
 
 #include <string>
@@ -9,33 +8,34 @@ using namespace std;
 
 
 class TodoListItem {
-    private:
-        int id;
-        bool complete;
-        string description;
-        chrono::system_clock::time_point inputDateTime;
+private:
+    int id;
+    bool complete;
+    string description;
+    chrono::system_clock::time_point inputDateTime;
 
-    public:
-        TodoListItem();
+public:
+    TodoListItem();
 
-        TodoListItem(int currId, bool currStatus,  string &currDesc, chrono::system_clock::time_point &currTime);
+    TodoListItem(int currId, bool currStatus,  string &currDesc, chrono::system_clock::time_point &currTime);
 
-        ~TodoListItem();
+    ~TodoListItem();
 
-        int getId();
+    int getId() const;
 
-        bool getStatus();
+    bool getStatus() const;
 
-        string getDescription();
+    string getDescription() const;
 
-        chrono::system_clock::time_point getSubmissionTime();
+    chrono::system_clock::time_point getSubmissionTime();
 
-        void setId(int currId);
+    void setId(int currId);
 
-        void setStatus(bool currStatus);
+    void setStatus(bool currStatus);
 
-        void setDescription(string currDescription);
+    void setDescription(string currDescription);
 
-        void setInputDateTime(chrono::system_clock::time_point currSubmitTime);
+    void setInputDateTime(chrono::system_clock::time_point currSubmitTime);
 };
 
+#endif

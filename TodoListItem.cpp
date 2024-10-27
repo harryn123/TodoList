@@ -17,34 +17,34 @@ TodoListItem::TodoListItem(int currId, bool currStatus,  string &currDesc, chron
 TodoListItem::~TodoListItem() {}
 
 // getters and setters?
-int TodoListItem::getId() {
-    return this->id;
+int TodoListItem::getId() const {
+    return id;
 }
 
 bool TodoListItem::getStatus() const {
     return complete;
 }
 
-string TodoListItem::getDescription() {
-    return this->description;
+string TodoListItem::getDescription() const{
+    return description;
 }
 
 chrono::system_clock::time_point TodoListItem::getSubmissionTime() {
-    return this->inputDateTime;
+    return inputDateTime;
 }
 
 void TodoListItem::setId(int currId) {
-    this->id = currId;
+    id = currId;
 }
 
 void TodoListItem::setStatus(bool currStatus) {
-    this->complete = currStatus;
+    complete = currStatus;
 }
 
 void TodoListItem::setDescription(string currDescription) {
-    this->description = currDescription;
+    description = currDescription;
 }
 
 void TodoListItem::setInputDateTime(chrono::system_clock::time_point currSubmitTime) {
-    this->inputDateTime = currSubmitTime;
+    inputDateTime = currSubmitTime;
 }
