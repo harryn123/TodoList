@@ -9,7 +9,6 @@ using namespace std;
 
 class TodoListItem {
 private:
-    int id;
     bool complete;
     string description;
     chrono::system_clock::time_point inputDateTime;
@@ -17,11 +16,9 @@ private:
 public:
     TodoListItem();
 
-    TodoListItem(int currId, bool currStatus,  const string &currDesc, chrono::system_clock::time_point currTime);
+    TodoListItem(bool currStatus,  const string &currDesc, chrono::system_clock::time_point currTime);
 
     ~TodoListItem();
-
-    int getId() const;
 
     bool getStatus() const;
 

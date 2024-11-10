@@ -4,6 +4,7 @@
 
 #include "TodoListItem.h"
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include <string>
 
@@ -12,25 +13,28 @@ using namespace std;
 
 class TodoListItemTable {
 private:
-    vector<TodoListItem> todoListTable;     // this is used for private data members
+    // changing todolisttable to be a map for much faster lookup times.
+    unordered_map<int, TodoListItem> todoListTable;
+    int maxId;
 
 public:
     TodoListItem getItem(int itemId);
 
-    bool addItem(const TodoListItem &itemToAdd);
+    void addItem(const TodoListItem &itemToAdd);
 
-    void removeItem(const TodoListItem &itemToRemove);
+    void removeItem(const int itemId);
 
-    void updateItem(TodoListItem &itemToUpdate);
+    void updateItemDescription(const int itemId, string updatedDescription);
 
-    void updateItemStatus(TodoListItem &itemToUpdateStatus);
+    void updateItemStatus(const int itemId);
 
-    int getTableSize();
+    const unordered_map<int, TodoListItem> getItems() const;
 
-    const vector<TodoListItem> getItems() const;
+    bool isEmpty();
 
+    bool itemFound(const int keyToSearch) const;    // this is used for helper functions
 private:
-    bool itemFound(const string &itemDescription) const;    // this is used for helper functions
+    int getMaxId() const;
 };
 
 #endif
