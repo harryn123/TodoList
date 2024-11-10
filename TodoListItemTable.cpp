@@ -2,98 +2,98 @@
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
+#include <unordered_map>
 
 using namespace std;
 
 
-const vector<TodoListItem> TodoListItemTable::getItems() const {
+const unordered_map<int,TodoListItem> TodoListItemTable::getItems() const {
+    // iterate through the map and get the items:
     return todoListTable;
 }
 
 TodoListItem TodoListItemTable::getItem(int itemId) {
-    // iterate through and check if the id is in our table:
-    for (const auto& item : todoListTable) {
-        if (item.getId() == itemId) {
-            return item;
-        }
-    }
-
-    throw runtime_error("item id not found in your todo list\n");
-}
-
-bool TodoListItemTable::itemFound(const string& itemDescription) const {
-    for (const auto& item : todoListTable) {
-        if (item.getDescription() == itemDescription) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool TodoListItemTable::addItem(const TodoListItem &itemToAdd) {
-    string itemDescription = itemToAdd.getDescription();
-    if (itemFound(itemDescription)) {
-        cout << "Error: this task has already been added to your list for the time being: " << itemDescription << "\n";
-        return false;
+    // check if the item is in the todoListItemTable
+    if (itemFound(itemId)) {
+        return todoListTable[itemId];
     } else {
-        todoListTable.push_back(itemToAdd);
-    }
-
-    return true;
+        throw runtime_error("Error: Task ID not found in your todo list\n");
+   }
 }
 
-void TodoListItemTable::removeItem(const TodoListItem &itemToRemove) {
+bool TodoListItemTable::itemFound(const int keyToSearch) const {
+    return todoListTable.find(keyToSearch) != todoListTable.end();
+}
+
+int TodoListItemTable::getMaxId() const {
+    // returns the highest id that we have seen so far:
+    int maxId = -1;
+    for (auto &data : todoListTable) {
+        if (data.first > maxId) {
+            maxId = data.first;
+        }
+    }
+    return maxId;
+}
+
+void TodoListItemTable::addItem(const TodoListItem &itemToAdd) {
+    // find the max id we have so far:
+    int currId;
+
     if (todoListTable.empty()) {
-        cout << "Error: there are no items in your todo list, please add item first then try to remove: " << "\n";
-        return;
+        currId = 1;
+        maxId = 1;
     } else {
-        // we can search through the vector to remove the item with the same id as the item that was passed:
-        for (auto item = todoListTable.begin(); item != todoListTable.end(); ) {
-            if (item -> getId() == itemToRemove.getId()) {
-                item = todoListTable.erase(item);
-            }
-            else {
-                item++;
-            }
+        currId = maxId + 1;
+        maxId++;
+    }
+
+    // add the item:
+    todoListTable[currId] = itemToAdd;
+
+
+}
+
+void TodoListItemTable::removeItem(const int itemId) {
+    if (todoListTable.empty() || !itemFound((itemId))) {
+        if (todoListTable.empty()) {
+            throw runtime_error("Error: Table is currently empty. Please add tasks before trying to delete.\n");
         }
+
+        if (!itemFound(itemId)) {
+            throw runtime_error("Error: Given ID doesn't exsists in your tasks at the moment. Please add it.\n");
+        }
+
+    } else {
+        todoListTable.erase(itemId);
     }
 }
 
-void TodoListItemTable::updateItem(TodoListItem &itemToUpdate) {
+void TodoListItemTable::updateItemDescription(const int itemId, string updatedDescription) {
     if (todoListTable.empty()) {
-        cout << "Error: Your table is empty. Please add items before you want to update them: " << "\n";
-        return;
-    } else {
-        // we need to search through and find the item we are looking for:
-        for (auto& item : todoListTable) {
-            if (item.getId() == itemToUpdate.getId()) {
-                item.setDescription(itemToUpdate.getDescription());
-                cout << "Successfully updated item: " << item.getId() << " \n";
-                return;
-            }
-        }
+        throw runtime_error("Error: Table is currently empty. Please add tasks before trying to delete.\n");
     }
-
-    cout << "Error: Item not found in the todo list. Item ID: " << itemToUpdate.getId() << " \n";
-
+    if (!itemFound(itemId)) {
+        throw runtime_error("Error: Given ID doesn't exsists in your tasks at the moment. Please add it.\n");
+    } else {
+        todoListTable[itemId].setDescription(updatedDescription);
+    }
 }
 
-void TodoListItemTable::updateItemStatus(TodoListItem &itemToUpdateStatus) {
+void TodoListItemTable::updateItemStatus(const int itemId) {
     if (todoListTable.empty()) {
-        cout << "Error: Your table is empty. Please add items before you want to update them: " << "\n";
-        return;
-    } else {
-        for (auto& item : todoListTable) {
-            if (item.getId() == itemToUpdateStatus.getId()) {
-                item.setStatus(!item.getStatus());
-                cout << "Successfully updated status of item:  " << item.getId() << "\n";
-                return;
-            }
-        }
+        throw runtime_error("Error: Table is currently empty. Please add tasks before trying to delete.\n");
+    }
+
+    if (!itemFound(itemId)) {
+        throw runtime_error("Error: Given ID doesn't exsists in your tasks at the moment. Please add it.\n");
+    }
+    else {
+        todoListTable[itemId].setStatus(!todoListTable[itemId].getStatus());
     }
 }
 
-
-int TodoListItemTable::getTableSize() {
-    return todoListTable.size();
+bool TodoListItemTable::isEmpty() {
+    return todoListTable.empty();
 }
+
