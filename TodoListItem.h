@@ -17,7 +17,7 @@ private:
 public:
     TodoListItem();
 
-    TodoListItem(int currId, bool currStatus,  string &currDesc, chrono::system_clock::time_point &currTime);
+    TodoListItem(int currId, bool currStatus,  const string &currDesc, chrono::system_clock::time_point currTime);
 
     ~TodoListItem();
 
@@ -28,6 +28,8 @@ public:
     string getDescription() const;
 
     chrono::system_clock::time_point getSubmissionTime();
+
+    string getHumanReadableSubmitTime() const;
 
     void setId(int currId);
 

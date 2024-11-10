@@ -1,8 +1,25 @@
 #include "TodoListItemTable.h"
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
+
+
+const vector<TodoListItem> TodoListItemTable::getItems() const {
+    return todoListTable;
+}
+
+TodoListItem TodoListItemTable::getItem(int itemId) {
+    // iterate through and check if the id is in our table:
+    for (const auto& item : todoListTable) {
+        if (item.getId() == itemId) {
+            return item;
+        }
+    }
+
+    throw runtime_error("item id not found in your todo list\n");
+}
 
 bool TodoListItemTable::itemFound(const string& itemDescription) const {
     for (const auto& item : todoListTable) {
@@ -48,13 +65,35 @@ void TodoListItemTable::updateItem(TodoListItem &itemToUpdate) {
         return;
     } else {
         // we need to search through and find the item we are looking for:
-        for (auto item = todoListTable.begin(); item != todoListTable.end(); ++item) {
-            *item = itemToUpdate;
-            cout << "Successfully updated item: " << item->getId() << " \n";
-            return;
+        for (auto& item : todoListTable) {
+            if (item.getId() == itemToUpdate.getId()) {
+                item.setDescription(itemToUpdate.getDescription());
+                cout << "Successfully updated item: " << item.getId() << " \n";
+                return;
+            }
         }
     }
 
     cout << "Error: Item not found in the todo list. Item ID: " << itemToUpdate.getId() << " \n";
 
+}
+
+void TodoListItemTable::updateItemStatus(TodoListItem &itemToUpdateStatus) {
+    if (todoListTable.empty()) {
+        cout << "Error: Your table is empty. Please add items before you want to update them: " << "\n";
+        return;
+    } else {
+        for (auto& item : todoListTable) {
+            if (item.getId() == itemToUpdateStatus.getId()) {
+                item.setStatus(!item.getStatus());
+                cout << "Successfully updated status of item:  " << item.getId() << "\n";
+                return;
+            }
+        }
+    }
+}
+
+
+int TodoListItemTable::getTableSize() {
+    return todoListTable.size();
 }

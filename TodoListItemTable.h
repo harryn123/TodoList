@@ -23,11 +23,14 @@ public:
 
     void updateItem(TodoListItem &itemToUpdate);
 
+    void updateItemStatus(TodoListItem &itemToUpdateStatus);
+
+    int getTableSize();
+
+    const vector<TodoListItem> getItems() const;
+
 private:
     bool itemFound(const string &itemDescription) const;    // this is used for helper functions
-
-
-
 };
 
 #endif
